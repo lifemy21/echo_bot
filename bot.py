@@ -1,12 +1,30 @@
-# 6153048734:AAEqUS7RhMo6lJ5idyfdJAPWUYx2EVICIDk DostavkaEd_bot
-# 6293433229:AAFFP_N0xqJwj2slYyxKWrK8VJAWPgvEtr8 yarasoff_bot
+import asyncio
 
-from config_data.config import load_config
+from aiogram import Bot, Dispatcher
+from config_data.config import Config, load_config
 
 
-config = load_config('C:\Project\Telegram_bot\.env')
+# Функция конфигурирования и запуска бота
+async def main() -> None:
 
-bot_token = config.tg_bot.token           # Сохраняем токен в переменную bot_token
-superadmin = config.tg_bot.admin_ids[0]   # Сохраняем ID админа в переменную superadmin
+    # Загружаем конфиг в переменную config
+    config: Config = load_config()
 
-print(superadmin)
+    # Инициализируем бот и диспетчер
+    bot: Bot = Bot(token=config.tg_bot.token)
+    dp: Dispatcher = Dispatcher()
+
+    # Пропускаем накопившиеся апдейты и запускаем polling
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot)
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+
+
+
+
+
+
